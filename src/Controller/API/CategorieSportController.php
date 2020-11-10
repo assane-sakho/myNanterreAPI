@@ -6,6 +6,7 @@ use App\Repository\CategorieSportRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategorieSportController extends AbstractController
 {
@@ -16,14 +17,10 @@ class CategorieSportController extends AbstractController
     {
         $sportCategories = $categorieSportRepository->findAll();
         $sportCategoriesNormalises = $normalize->normalize($sportCategories);
+        $json = json_encode($sportCategoriesNormalises, JSON_PRETTY_PRINT);
 
-        $json = json_encode($sportCategoriesNormalises);
-
-        dd($json);
-
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/ApiSportCategorieController.php',
-        ]);
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }
