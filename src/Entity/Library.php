@@ -29,6 +29,7 @@ class Library
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"library:read", "library:write"})
      */
     private $id;
 
@@ -118,6 +119,12 @@ class Library
      */
     private $libraryDocumentaryFund;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryConsultationLoanCondition::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryConsultationLoanConditions;
+
 
     public function __construct()
     {
@@ -128,6 +135,7 @@ class Library
         $this->libraryDomain = new ArrayCollection();
         $this->libraryService = new ArrayCollection();
         $this->libraryDocumentaryFund = new ArrayCollection();
+        $this->libraryConsultationLoanConditions = new ArrayCollection();
     }
 
 
@@ -382,6 +390,36 @@ class Library
             // set the owning side to null (unless already changed)
             if ($libraryDocumentaryFund->getLibrary() === $this) {
                 $libraryDocumentaryFund->setLibrary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LibraryConsultationLoanCondition[]
+     */
+    public function getLibraryConsultationLoanConditions(): Collection
+    {
+        return $this->libraryConsultationLoanConditions;
+    }
+
+    public function addLibraryConsultationLoanCondition(LibraryConsultationLoanCondition $libraryConsultationLoanCondition): self
+    {
+        if (!$this->libraryConsultationLoanConditions->contains($libraryConsultationLoanCondition)) {
+            $this->libraryConsultationLoanConditions[] = $libraryConsultationLoanCondition;
+            $libraryConsultationLoanCondition->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryConsultationLoanCondition(LibraryConsultationLoanCondition $libraryConsultationLoanCondition): self
+    {
+        if ($this->libraryConsultationLoanConditions->removeElement($libraryConsultationLoanCondition)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryConsultationLoanCondition->getLibrary() === $this) {
+                $libraryConsultationLoanCondition->setLibrary(null);
             }
         }
 

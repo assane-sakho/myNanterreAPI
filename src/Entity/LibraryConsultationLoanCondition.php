@@ -2,41 +2,35 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\LibraryConsultationLoanConditionRepository;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * LibraryConditionConsultationLoan
- *
- * @ORM\Table(name="library_condition_consultation_loan", indexes={@ORM\Index(name="library_id", columns={"library_id"})})
- * @ORM\Entity
+ * @ORM\Table(name="library_consultation_loan_condition", indexes={@ORM\Index(name="library_id", columns={"library_id"})})
  * @ApiResource
+ * @ORM\Entity
  */
-class LibraryConditionConsultationLoan
+class LibraryConsultationLoanCondition
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     * @Groups({"library:read", "library:write"})
      */
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"library:read", "library:write"})
      */
     private $name;
 
     /**
-     * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryConsultationLoanConditions")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $library;
 
@@ -68,6 +62,4 @@ class LibraryConditionConsultationLoan
 
         return $this;
     }
-
-
 }
