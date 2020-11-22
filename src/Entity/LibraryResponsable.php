@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * LibraryResponsable
@@ -18,6 +19,7 @@ class LibraryResponsable
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
+     * @Groups({"library:read", "library:write"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -26,6 +28,7 @@ class LibraryResponsable
     /**
      * @var string
      *
+     * @Groups({"library:read", "library:write"})
      * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
      */
     private $fullname;
@@ -33,6 +36,7 @@ class LibraryResponsable
     /**
      * @var string|null
      *
+     * @Groups({"library:read", "library:write"})
      * @ORM\Column(name="phone_number", type="string", length=10, nullable=true)
      */
     private $phoneNumber;
@@ -40,17 +44,14 @@ class LibraryResponsable
     /**
      * @var string|null
      *
+     * @Groups({"library:read", "library:write"})
      * @ORM\Column(name="mail", type="string", length=255, nullable=true)
      */
     private $mail;
 
     /**
-     * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library", inversedBy="libraryResponsables")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryResponsables")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $library;
 
@@ -106,6 +107,4 @@ class LibraryResponsable
 
         return $this;
     }
-
-
 }

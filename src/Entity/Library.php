@@ -83,30 +83,24 @@ class Library
      */
     private $building;
 
-
-    /*
-     * @ORM\OneToMany(targetEntity="LibraryService", mappedBy="library")
-     * @Groups({"library:read", "library:write"})
-    */
-    private $libraryServices;
-    
-    /*
-     * @ORM\OneToMany(targetEntity="LibraryResponsable", mappedBy="library")
-     * @Groups({"library:read", "library:write"})
-     */
-    private $libraryResponsables;
-
     /**
      * @ORM\OneToMany(targetEntity=LibrarySchedule::class, mappedBy="library")
      * @Groups({"library:read", "library:write"})
      */
     private $librarySchedules;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryResponsable::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryResponsables;
+
 
     public function __construct()
     {
         $this->libraryServices = new ArrayCollection();
         $this->librarySchedules = new ArrayCollection();
+        $this->libraryResponsables = new ArrayCollection();
     }
 
 
@@ -188,14 +182,6 @@ class Library
     }
 
     /**
-     * @return Collection|LibraryService[]
-     */
-    public function getLibraryServices() : ?Collection
-    {
-        return $this->libraryServices;
-    }
-
-    /**
      * @return Collection|LibrarySchedule[]
      */
     public function getLibrarySchedules(): Collection
@@ -219,6 +205,36 @@ class Library
             // set the owning side to null (unless already changed)
             if ($librarySchedule->getLibrary2() === $this) {
                 $librarySchedule->setLibrary2(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LibraryResponsable[]
+     */
+    public function getLibraryResponsables(): Collection
+    {
+        return $this->libraryResponsables;
+    }
+
+    public function addLibraryResponsable(LibraryResponsable $libraryResponsable): self
+    {
+        if (!$this->libraryResponsables->contains($libraryResponsable)) {
+            $this->libraryResponsables[] = $libraryResponsable;
+            $libraryResponsable->setLibrary2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryResponsable(LibraryResponsable $libraryResponsable): self
+    {
+        if ($this->libraryResponsables->removeElement($libraryResponsable)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryResponsable->getLibrary2() === $this) {
+                $libraryResponsable->setLibrary2(null);
             }
         }
 
