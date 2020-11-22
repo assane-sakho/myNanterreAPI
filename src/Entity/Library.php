@@ -112,6 +112,12 @@ class Library
      * @Groups({"library:read", "library:write"})
      */
     private $libraryService;
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryDocumentaryFund::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryDocumentaryFund;
+
 
     public function __construct()
     {
@@ -121,6 +127,7 @@ class Library
         $this->libraryLink = new ArrayCollection();
         $this->libraryDomain = new ArrayCollection();
         $this->libraryService = new ArrayCollection();
+        $this->libraryDocumentaryFund = new ArrayCollection();
     }
 
 
@@ -349,5 +356,35 @@ class Library
             }
         }
         
+    }
+
+    /**
+     * @return Collection|LibraryDocumentaryFund[]
+     */
+    public function getLibraryDocumentaryFund(): Collection
+    {
+        return $this->libraryDocumentaryFund;
+    }
+
+    public function addLibraryDocumentaryFund(LibraryDocumentaryFund $libraryDocumentaryFund): self
+    {
+        if (!$this->libraryDocumentaryFund->contains($libraryDocumentaryFund)) {
+            $this->libraryDocumentaryFund[] = $libraryDocumentaryFund;
+            $libraryDocumentaryFund->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryDocumentaryFund(LibraryDocumentaryFund $libraryDocumentaryFund): self
+    {
+        if ($this->libraryDocumentaryFund->removeElement($libraryDocumentaryFund)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryDocumentaryFund->getLibrary() === $this) {
+                $libraryDocumentaryFund->setLibrary(null);
+            }
+        }
+
+        return $this;
     }
 }

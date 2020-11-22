@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * LibraryDocumentaryFund
@@ -18,6 +19,7 @@ class LibraryDocumentaryFund
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
+     * @Groups({"library:read", "library:write"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -27,16 +29,12 @@ class LibraryDocumentaryFund
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $name;
 
     /**
-     * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDocumentaryFund")
      */
     private $library;
 
@@ -68,6 +66,4 @@ class LibraryDocumentaryFund
 
         return $this;
     }
-
-
 }
