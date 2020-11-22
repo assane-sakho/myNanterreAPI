@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * LibraryLink
@@ -18,6 +19,7 @@ class LibraryLink
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
+     * @Groups({"library:read", "library:write"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -27,6 +29,7 @@ class LibraryLink
      * @var string
      *
      * @ORM\Column(name="link", type="string", length=255, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $link;
 
@@ -34,6 +37,7 @@ class LibraryLink
      * @var \LinkType
      *
      * @ORM\ManyToOne(targetEntity="LinkType")
+     * @Groups({"library:read", "library:write"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="link_type", referencedColumnName="id")
      * })
@@ -41,12 +45,7 @@ class LibraryLink
     private $linkType;
 
     /**
-     * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryLink")
      */
     private $library;
 

@@ -95,12 +95,19 @@ class Library
      */
     private $libraryResponsables;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryLink::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryLink;
+
 
     public function __construct()
     {
         $this->libraryServices = new ArrayCollection();
         $this->librarySchedules = new ArrayCollection();
         $this->libraryResponsables = new ArrayCollection();
+        $this->libraryLink = new ArrayCollection();
     }
 
 
@@ -235,6 +242,36 @@ class Library
             // set the owning side to null (unless already changed)
             if ($libraryResponsable->getLibrary2() === $this) {
                 $libraryResponsable->setLibrary2(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LibraryLink[]
+     */
+    public function getLibraryLink(): Collection
+    {
+        return $this->libraryLink;
+    }
+
+    public function addLibraryLink(LibraryLink $libraryLink): self
+    {
+        if (!$this->libraryLink->contains($libraryLink)) {
+            $this->libraryLink[] = $libraryLink;
+            $libraryLink->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryLink(LibraryLink $libraryLink): self
+    {
+        if ($this->libraryLink->removeElement($libraryLink)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryLink->getLibrary() === $this) {
+                $libraryLink->setLibrary(null);
             }
         }
 
