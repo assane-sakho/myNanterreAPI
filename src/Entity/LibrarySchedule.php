@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * LibrarySchedule
@@ -18,6 +19,7 @@ class LibrarySchedule
      * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
+     * @Groups({"library:read", "library:write"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -26,14 +28,16 @@ class LibrarySchedule
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="opening_time", type="time", nullable=false)
+     * @ORM\Column(name="opening_time", type="datetime", nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $openingTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="closing_time", type="time", nullable=false)
+     * @ORM\Column(name="closing_time", type="datetime", nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $closingTime;
 
@@ -41,18 +45,16 @@ class LibrarySchedule
      * @var string
      *
      * @ORM\Column(name="days", type="string", length=17, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $days;
 
     /**
-     * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="librarySchedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $library;
+
 
     public function getId(): ?int
     {
@@ -106,6 +108,5 @@ class LibrarySchedule
 
         return $this;
     }
-
 
 }

@@ -69,7 +69,6 @@ class Library
      *
      * @ORM\Column(name="mail", type="string", length=255, nullable=true)
      * @Groups({"library:read", "library:write"})
-
      */
     private $mail;
 
@@ -91,10 +90,23 @@ class Library
     */
     private $libraryServices;
     
+    /*
+     * @ORM\OneToMany(targetEntity="LibraryResponsable", mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryResponsables;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LibrarySchedule::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $librarySchedules;
+
 
     public function __construct()
     {
         $this->libraryServices = new ArrayCollection();
+        $this->librarySchedules = new ArrayCollection();
     }
 
 
@@ -181,5 +193,35 @@ class Library
     public function getLibraryServices() : ?Collection
     {
         return $this->libraryServices;
+    }
+
+    /**
+     * @return Collection|LibrarySchedule[]
+     */
+    public function getLibrarySchedules(): Collection
+    {
+        return $this->librarySchedules;
+    }
+
+    public function addLibrarySchedule(LibrarySchedule $librarySchedule): self
+    {
+        if (!$this->librarySchedules->contains($librarySchedule)) {
+            $this->librarySchedules[] = $librarySchedule;
+            $librarySchedule->setLibrary2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibrarySchedule(LibrarySchedule $librarySchedule): self
+    {
+        if ($this->librarySchedules->removeElement($librarySchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($librarySchedule->getLibrary2() === $this) {
+                $librarySchedule->setLibrary2(null);
+            }
+        }
+
+        return $this;
     }
 }

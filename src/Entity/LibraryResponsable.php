@@ -47,7 +47,7 @@ class LibraryResponsable
     /**
      * @var \Library
      *
-     * @ORM\ManyToOne(targetEntity="Library")
+     * @ORM\ManyToOne(targetEntity="Library", inversedBy="libraryResponsables")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
      * })
