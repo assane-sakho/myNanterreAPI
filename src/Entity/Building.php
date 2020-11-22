@@ -29,6 +29,7 @@ class Building
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $name;
 
@@ -36,6 +37,7 @@ class Building
      * @var string|null
      *
      * @ORM\Column(name="alias", type="string", length=20, nullable=true)
+     * @Groups({"library:read", "library:write"})
      */
     private $alias;
 

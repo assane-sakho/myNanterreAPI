@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * LibraryService
@@ -27,6 +28,7 @@ class LibraryService
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $name;
 
@@ -37,6 +39,7 @@ class LibraryService
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
      * })
+     * @Groups({"library:read", "library:write"})
      */
     private $library;
 

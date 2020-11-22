@@ -13,7 +13,10 @@ use Doctrine\Common\Collections\Collection;
  *
  * @ORM\Table(name="library", indexes={@ORM\Index(name="building_id", columns={"building_id"})})
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(
+ *     normalizationContext={"groups"={"library:read"}},
+ *     denormalizationContext={"groups"={"library:write"}}
+ * )
  * 
  *  */
 
@@ -33,6 +36,7 @@ class Library
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"library:read", "library:write"})
      */
     private $name;
 
@@ -40,7 +44,7 @@ class Library
      * @var string
      *
      * @ORM\Column(name="location", type="string", length=255, nullable=false)
-
+     * @Groups({"library:read", "library:write"})
      */
     private $location;
 
@@ -48,6 +52,7 @@ class Library
      * @var string|null
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @Groups({"library:read", "library:write"})
      */
     private $description;
 
@@ -55,6 +60,7 @@ class Library
      * @var string|null
      *
      * @ORM\Column(name="reception_phone_number", type="string", length=10, nullable=true)
+     * @Groups({"library:read", "library:write"})
      */
     private $receptionPhoneNumber;
 
@@ -62,6 +68,8 @@ class Library
      * @var string|null
      *
      * @ORM\Column(name="mail", type="string", length=255, nullable=true)
+     * @Groups({"library:read", "library:write"})
+
      */
     private $mail;
 
@@ -72,12 +80,14 @@ class Library
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="building_id", referencedColumnName="id")
      * })
+     * @Groups({"library:read", "library:write"})
      */
     private $building;
 
 
     /*
-     * @ORM\OneToMany(targetEntity="App\Entity\LibraryService", mappedBy="library")
+     * @ORM\OneToMany(targetEntity="LibraryService", mappedBy="library")
+     * @Groups({"library:read", "library:write"})
     */
     private $libraryServices;
     
@@ -165,7 +175,10 @@ class Library
         return $this;
     }
 
-    public function getLibraryServices()
+    /**
+     * @return Collection|LibraryService[]
+     */
+    public function getLibraryServices() : ?Collection
     {
         return $this->libraryServices;
     }
