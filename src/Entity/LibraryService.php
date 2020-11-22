@@ -21,6 +21,7 @@ class LibraryService
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"library:read", "library:write"})
      */
     private $id;
 
@@ -34,12 +35,9 @@ class LibraryService
 
     /**
      * @var \Library
-     *
-     * @ORM\ManyToOne(targetEntity="Library", inversedBy="libraryServices")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
-     * })
-     * @Groups({"library:read", "library:write"})
+
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryService")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $library;
 
@@ -71,6 +69,4 @@ class LibraryService
 
         return $this;
     }
-
-
 }

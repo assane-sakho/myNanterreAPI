@@ -107,6 +107,11 @@ class Library
      */
     private $libraryDomain;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryService::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryService;
 
     public function __construct()
     {
@@ -115,6 +120,7 @@ class Library
         $this->libraryResponsables = new ArrayCollection();
         $this->libraryLink = new ArrayCollection();
         $this->libraryDomain = new ArrayCollection();
+        $this->libraryService = new ArrayCollection();
     }
 
 
@@ -313,5 +319,35 @@ class Library
         }
 
         return $this;
+    }
+
+    
+    /**
+     * @return Collection|LibraryService[]
+     */
+    public function getLibraryService(): Collection
+    {
+        return $this->libraryService;
+    }
+
+    public function addLibraryService(LibraryService $libraryService): self
+    {
+        if (!$this->libraryService->contains($libraryService)) {
+            $this->libraryService[] = $libraryService;
+            $libraryService->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryService(LibraryService $libraryService): self
+    {
+        if ($this->libraryService->removeElement($libraryService)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryService->getLibrary() === $this) {
+                $libraryService->setLibrary(null);
+            }
+        }
+        
     }
 }
