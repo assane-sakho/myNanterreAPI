@@ -101,6 +101,12 @@ class Library
      */
     private $libraryLink;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryDomain::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryDomain;
+
 
     public function __construct()
     {
@@ -108,6 +114,7 @@ class Library
         $this->librarySchedules = new ArrayCollection();
         $this->libraryResponsables = new ArrayCollection();
         $this->libraryLink = new ArrayCollection();
+        $this->libraryDomain = new ArrayCollection();
     }
 
 
@@ -200,7 +207,7 @@ class Library
     {
         if (!$this->librarySchedules->contains($librarySchedule)) {
             $this->librarySchedules[] = $librarySchedule;
-            $librarySchedule->setLibrary2($this);
+            $librarySchedule->setLibrary($this);
         }
 
         return $this;
@@ -210,8 +217,8 @@ class Library
     {
         if ($this->librarySchedules->removeElement($librarySchedule)) {
             // set the owning side to null (unless already changed)
-            if ($librarySchedule->getLibrary2() === $this) {
-                $librarySchedule->setLibrary2(null);
+            if ($librarySchedule->getLibrary() === $this) {
+                $librarySchedule->setLibrary(null);
             }
         }
 
@@ -230,7 +237,7 @@ class Library
     {
         if (!$this->libraryResponsables->contains($libraryResponsable)) {
             $this->libraryResponsables[] = $libraryResponsable;
-            $libraryResponsable->setLibrary2($this);
+            $libraryResponsable->setLibrary($this);
         }
 
         return $this;
@@ -240,8 +247,8 @@ class Library
     {
         if ($this->libraryResponsables->removeElement($libraryResponsable)) {
             // set the owning side to null (unless already changed)
-            if ($libraryResponsable->getLibrary2() === $this) {
-                $libraryResponsable->setLibrary2(null);
+            if ($libraryResponsable->getLibrary() === $this) {
+                $libraryResponsable->setLibrary(null);
             }
         }
 
@@ -272,6 +279,36 @@ class Library
             // set the owning side to null (unless already changed)
             if ($libraryLink->getLibrary() === $this) {
                 $libraryLink->setLibrary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|libraryDomain[]
+     */
+    public function getlibraryDomain(): Collection
+    {
+        return $this->libraryDomain;
+    }
+
+    public function addLibraryDomain(LibraryDomain $libraryDomain): self
+    {
+        if (!$this->libraryDomain->contains($libraryDomain)) {
+            $this->libraryDomain[] = $libraryDomain;
+            $libraryDomain->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryDomain(LibraryDomain $libraryDomain): self
+    {
+        if ($this->libraryDomain->removeElement($libraryDomain)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryDomain->getLibrary() === $this) {
+                $libraryDomain->setLibrary(null);
             }
         }
 
