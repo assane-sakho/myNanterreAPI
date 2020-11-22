@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Crous
+ * LibraryConditionConsultationLoan
  *
- * @ORM\Table(name="crous")
+ * @ORM\Table(name="library_condition_consultation_loan", indexes={@ORM\Index(name="library_id", columns={"library_id"})})
  * @ORM\Entity
  * @ApiResource
  */
-class Crous
+class LibraryConditionConsultationLoan
 {
     /**
      * @var int
@@ -31,11 +31,14 @@ class Crous
     private $name;
 
     /**
-     * @var string
+     * @var \Library
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Library")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="library_id", referencedColumnName="id")
+     * })
      */
-    private $location;
+    private $library;
 
     public function getId(): ?int
     {
@@ -54,14 +57,14 @@ class Crous
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getLibrary(): ?Library
     {
-        return $this->location;
+        return $this->library;
     }
 
-    public function setLocation(string $location): self
+    public function setLibrary(?Library $library): self
     {
-        $this->location = $location;
+        $this->library = $library;
 
         return $this;
     }

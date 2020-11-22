@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+
+/**
+ * CrousProductAvailability
+ *
+ * @ORM\Table(name="crous_product_availability", indexes={@ORM\Index(name="crous_product_id", columns={"crous_product_id"})})
+ * @ORM\Entity
+ * @ApiResource
+ */
+class CrousProductAvailability
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var binary
+     *
+     * @ORM\Column(name="isAvailable", type="binary", nullable=false)
+     */
+    private $isavailable;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
+    /**
+     * @var \CrousProduct
+     *
+     * @ORM\ManyToOne(targetEntity="CrousProduct")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="crous_product_id", referencedColumnName="id")
+     * })
+     */
+    private $crousProduct;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getIsavailable()
+    {
+        return $this->isavailable;
+    }
+
+    public function setIsavailable($isavailable): self
+    {
+        $this->isavailable = $isavailable;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getCrousProduct(): ?CrousProduct
+    {
+        return $this->crousProduct;
+    }
+
+    public function setCrousProduct(?CrousProduct $crousProduct): self
+    {
+        $this->crousProduct = $crousProduct;
+
+        return $this;
+    }
+
+
+}

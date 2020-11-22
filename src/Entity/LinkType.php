@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Crous
+ * LinkType
  *
- * @ORM\Table(name="crous")
+ * @ORM\Table(name="link_type")
  * @ORM\Entity
  * @ApiResource
  */
-class Crous
+class LinkType
 {
     /**
      * @var int
@@ -26,42 +26,42 @@ class Crous
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
      */
-    private $name;
+    private $type;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\Column(name="base", type="string", length=255, nullable=true)
      */
-    private $location;
+    private $base;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getType(): ?string
     {
-        return $this->name;
+        return $this->type;
     }
 
-    public function setName(string $name): self
+    public function setType(string $type): self
     {
-        $this->name = $name;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getBase(): ?string
     {
-        return $this->location;
+        return $this->base;
     }
 
-    public function setLocation(string $location): self
+    public function setBase(?string $base): self
     {
-        $this->location = $location;
+        $this->base = $base;
 
         return $this;
     }

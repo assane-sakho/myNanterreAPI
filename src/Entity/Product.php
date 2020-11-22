@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Crous
+ * Product
  *
- * @ORM\Table(name="crous")
+ * @ORM\Table(name="product")
  * @ORM\Entity
  * @ApiResource
  */
-class Crous
+class Product
 {
     /**
      * @var int
@@ -31,11 +31,11 @@ class Crous
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $location;
+    private $price;
 
     public function getId(): ?int
     {
@@ -54,17 +54,16 @@ class Crous
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getPrice(): ?string
     {
-        return $this->location;
+        return $this->price;
     }
 
-    public function setLocation(string $location): self
+    public function setPrice(?string $price): self
     {
-        $this->location = $location;
+        $this->price = $price;
 
         return $this;
     }
-
 
 }

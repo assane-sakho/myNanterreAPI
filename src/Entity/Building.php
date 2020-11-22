@@ -4,15 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Crous
+ * Building
  *
- * @ORM\Table(name="crous")
+ * @ORM\Table(name="building")
  * @ORM\Entity
  * @ApiResource
  */
-class Crous
+class Building
 {
     /**
      * @var int
@@ -20,6 +21,7 @@ class Crous
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"read"})
      */
     private $id;
 
@@ -31,11 +33,11 @@ class Crous
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\Column(name="alias", type="string", length=20, nullable=true)
      */
-    private $location;
+    private $alias;
 
     public function getId(): ?int
     {
@@ -54,14 +56,14 @@ class Crous
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getAlias(): ?string
     {
-        return $this->location;
+        return $this->alias;
     }
 
-    public function setLocation(string $location): self
+    public function setAlias(?string $alias): self
     {
-        $this->location = $location;
+        $this->alias = $alias;
 
         return $this;
     }
