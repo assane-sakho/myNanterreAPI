@@ -125,6 +125,11 @@ class Library
      */
     private $libraryConsultationLoanConditions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LibraryAttendance::class, mappedBy="library")
+     * @Groups({"library:read", "library:write"})
+     */
+    private $libraryAttendances;
 
     public function __construct()
     {
@@ -136,6 +141,7 @@ class Library
         $this->libraryService = new ArrayCollection();
         $this->libraryDocumentaryFund = new ArrayCollection();
         $this->libraryConsultationLoanConditions = new ArrayCollection();
+        $this->libraryAttendances = new ArrayCollection();
     }
 
 
@@ -420,6 +426,36 @@ class Library
             // set the owning side to null (unless already changed)
             if ($libraryConsultationLoanCondition->getLibrary() === $this) {
                 $libraryConsultationLoanCondition->setLibrary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LibraryAttendance[]
+     */
+    public function getLibraryAttendances(): Collection
+    {
+        return $this->libraryAttendances;
+    }
+
+    public function addLibraryAttendance(LibraryAttendance $libraryAttendance): self
+    {
+        if (!$this->libraryAttendances->contains($libraryAttendance)) {
+            $this->libraryAttendances[] = $libraryAttendance;
+            $libraryAttendance->setLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibraryAttendance(LibraryAttendance $libraryAttendance): self
+    {
+        if ($this->libraryAttendances->removeElement($libraryAttendance)) {
+            // set the owning side to null (unless already changed)
+            if ($libraryAttendance->getLibrary() === $this) {
+                $libraryAttendance->setLibrary(null);
             }
         }
 
