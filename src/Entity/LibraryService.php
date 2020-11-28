@@ -36,7 +36,7 @@ class LibraryService
     /**
      * @var \Library
 
-     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryService")
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryServices")
      * @ORM\JoinColumn(nullable=false)
      */
     private $library;

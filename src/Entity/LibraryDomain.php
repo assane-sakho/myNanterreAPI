@@ -35,7 +35,7 @@ class LibraryDomain
     private $domain;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDomain")
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDomains")
      */
     private $library;
 

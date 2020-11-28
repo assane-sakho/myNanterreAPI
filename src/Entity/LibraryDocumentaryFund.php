@@ -34,7 +34,7 @@ class LibraryDocumentaryFund
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDocumentaryFund")
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDocumentaryFunds")
      */
     private $library;
 

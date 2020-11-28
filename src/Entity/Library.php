@@ -100,24 +100,24 @@ class Library
      * @ORM\OneToMany(targetEntity=LibraryLink::class, mappedBy="library")
      * @Groups({"library:read", "library:write"})
      */
-    private $libraryLink;
+    private $libraryLinks;
 
     /**
      * @ORM\OneToMany(targetEntity=LibraryDomain::class, mappedBy="library")
      * @Groups({"library:read", "library:write"})
      */
-    private $libraryDomain;
+    private $libraryDomains;
 
     /**
      * @ORM\OneToMany(targetEntity=LibraryService::class, mappedBy="library")
      * @Groups({"library:read", "library:write"})
      */
-    private $libraryService;
+    private $libraryServices;
     /**
      * @ORM\OneToMany(targetEntity=LibraryDocumentaryFund::class, mappedBy="library")
      * @Groups({"library:read", "library:write"})
      */
-    private $libraryDocumentaryFund;
+    private $libraryDocumentaryFunds;
 
     /**
      * @ORM\OneToMany(targetEntity=LibraryConsultationLoanCondition::class, mappedBy="library")
@@ -133,13 +133,13 @@ class Library
 
     public function __construct()
     {
-        $this->libraryServices = new ArrayCollection();
+        $this->libraryServicess = new ArrayCollection();
         $this->librarySchedules = new ArrayCollection();
         $this->libraryResponsables = new ArrayCollection();
-        $this->libraryLink = new ArrayCollection();
-        $this->libraryDomain = new ArrayCollection();
-        $this->libraryService = new ArrayCollection();
-        $this->libraryDocumentaryFund = new ArrayCollection();
+        $this->libraryLinks = new ArrayCollection();
+        $this->libraryDomains = new ArrayCollection();
+        $this->libraryServices = new ArrayCollection();
+        $this->libraryDocumentaryFunds = new ArrayCollection();
         $this->libraryConsultationLoanConditions = new ArrayCollection();
         $this->libraryAttendances = new ArrayCollection();
     }
@@ -222,6 +222,7 @@ class Library
         return $this;
     }
 
+
     /**
      * @return Collection|LibrarySchedule[]
      */
@@ -285,15 +286,15 @@ class Library
     /**
      * @return Collection|LibraryLink[]
      */
-    public function getLibraryLink(): Collection
+    public function getLibraryLinks(): Collection
     {
-        return $this->libraryLink;
+        return $this->libraryLinks;
     }
 
     public function addLibraryLink(LibraryLink $libraryLink): self
     {
-        if (!$this->libraryLink->contains($libraryLink)) {
-            $this->libraryLink[] = $libraryLink;
+        if (!$this->libraryLinks->contains($libraryLink)) {
+            $this->libraryLinks[] = $libraryLink;
             $libraryLink->setLibrary($this);
         }
 
@@ -302,7 +303,7 @@ class Library
 
     public function removeLibraryLink(LibraryLink $libraryLink): self
     {
-        if ($this->libraryLink->removeElement($libraryLink)) {
+        if ($this->libraryLinks->removeElement($libraryLink)) {
             // set the owning side to null (unless already changed)
             if ($libraryLink->getLibrary() === $this) {
                 $libraryLink->setLibrary(null);
@@ -313,17 +314,17 @@ class Library
     }
 
     /**
-     * @return Collection|libraryDomain[]
+     * @return Collection|LibraryDomains[]
      */
-    public function getlibraryDomain(): Collection
+    public function getLibraryDomains(): Collection
     {
-        return $this->libraryDomain;
+        return $this->libraryDomains;
     }
 
     public function addLibraryDomain(LibraryDomain $libraryDomain): self
     {
-        if (!$this->libraryDomain->contains($libraryDomain)) {
-            $this->libraryDomain[] = $libraryDomain;
+        if (!$this->libraryDomains->contains($libraryDomain)) {
+            $this->libraryDomains[] = $libraryDomain;
             $libraryDomain->setLibrary($this);
         }
 
@@ -332,7 +333,7 @@ class Library
 
     public function removeLibraryDomain(LibraryDomain $libraryDomain): self
     {
-        if ($this->libraryDomain->removeElement($libraryDomain)) {
+        if ($this->libraryDomains->removeElement($libraryDomain)) {
             // set the owning side to null (unless already changed)
             if ($libraryDomain->getLibrary() === $this) {
                 $libraryDomain->setLibrary(null);
@@ -346,15 +347,15 @@ class Library
     /**
      * @return Collection|LibraryService[]
      */
-    public function getLibraryService(): Collection
+    public function getLibraryServices(): Collection
     {
-        return $this->libraryService;
+        return $this->libraryServices;
     }
 
     public function addLibraryService(LibraryService $libraryService): self
     {
-        if (!$this->libraryService->contains($libraryService)) {
-            $this->libraryService[] = $libraryService;
+        if (!$this->libraryServices->contains($libraryService)) {
+            $this->libraryServices[] = $libraryService;
             $libraryService->setLibrary($this);
         }
 
@@ -363,7 +364,7 @@ class Library
 
     public function removeLibraryService(LibraryService $libraryService): self
     {
-        if ($this->libraryService->removeElement($libraryService)) {
+        if ($this->libraryServices->removeElement($libraryService)) {
             // set the owning side to null (unless already changed)
             if ($libraryService->getLibrary() === $this) {
                 $libraryService->setLibrary(null);
@@ -377,13 +378,13 @@ class Library
      */
     public function getLibraryDocumentaryFund(): Collection
     {
-        return $this->libraryDocumentaryFund;
+        return $this->libraryDocumentaryFunds;
     }
 
     public function addLibraryDocumentaryFund(LibraryDocumentaryFund $libraryDocumentaryFund): self
     {
-        if (!$this->libraryDocumentaryFund->contains($libraryDocumentaryFund)) {
-            $this->libraryDocumentaryFund[] = $libraryDocumentaryFund;
+        if (!$this->libraryDocumentaryFunds->contains($libraryDocumentaryFund)) {
+            $this->libraryDocumentaryFunds[] = $libraryDocumentaryFund;
             $libraryDocumentaryFund->setLibrary($this);
         }
 
@@ -392,7 +393,7 @@ class Library
 
     public function removeLibraryDocumentaryFund(LibraryDocumentaryFund $libraryDocumentaryFund): self
     {
-        if ($this->libraryDocumentaryFund->removeElement($libraryDocumentaryFund)) {
+        if ($this->libraryDocumentaryFunds->removeElement($libraryDocumentaryFund)) {
             // set the owning side to null (unless already changed)
             if ($libraryDocumentaryFund->getLibrary() === $this) {
                 $libraryDocumentaryFund->setLibrary(null);

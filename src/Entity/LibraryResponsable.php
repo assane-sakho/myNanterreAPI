@@ -29,9 +29,9 @@ class LibraryResponsable
      * @var string
      *
      * @Groups({"library:read", "library:write"})
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @ORM\Column(name="full_name", type="string", length=255, nullable=false)
      */
-    private $fullname;
+    private $fullName;
 
     /**
      * @var string|null
@@ -60,14 +60,14 @@ class LibraryResponsable
         return $this->id;
     }
 
-    public function getFullname(): ?string
+    public function getFullName(): ?string
     {
-        return $this->fullname;
+        return $this->fullName;
     }
 
-    public function setFullname(string $fullname): self
+    public function setFullName(string $fullName): self
     {
-        $this->fullname = $fullname;
+        $this->fullName = $fullName;
 
         return $this;
     }

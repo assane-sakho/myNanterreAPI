@@ -37,7 +37,6 @@ class LibraryLink
      * @var \LinkType
      *
      * @ORM\ManyToOne(targetEntity="LinkType")
-     * @Groups({"library:read", "library:write"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="link_type", referencedColumnName="id")
      * })
@@ -45,7 +44,7 @@ class LibraryLink
     private $linkType;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryLink")
+     * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryLinks")
      */
     private $library;
 
@@ -56,7 +55,7 @@ class LibraryLink
 
     public function getLink(): ?string
     {
-        return $this->link;
+        return $this->linkType != null ? $this->linkType->getBase() . '/' . $this->link :  $this->link;
     }
 
     public function setLink(string $link): self
