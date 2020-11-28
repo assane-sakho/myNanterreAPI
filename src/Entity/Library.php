@@ -376,7 +376,7 @@ class Library
     /**
      * @return Collection|LibraryDocumentaryFund[]
      */
-    public function getLibraryDocumentaryFund(): Collection
+    public function getLibraryDocumentaryFunds(): Collection
     {
         return $this->libraryDocumentaryFunds;
     }
