@@ -29,10 +29,10 @@ class LibraryDomain
     /**
      * @var string
      *
-     * @ORM\Column(name="domain", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Groups({"library:read", "library:write"})
      */
-    private $domain;
+    private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="libraryDomains")
@@ -44,14 +44,14 @@ class LibraryDomain
         return $this->id;
     }
 
-    public function getDomain(): ?string
+    public function getName(): ?string
     {
-        return $this->domain;
+        return $this->name;
     }
 
-    public function setDomain(string $domain): self
+    public function setName(string $name): self
     {
-        $this->domain = $domain;
+        $this->name = $name;
 
         return $this;
     }
