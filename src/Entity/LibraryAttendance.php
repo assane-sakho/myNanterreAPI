@@ -68,9 +68,9 @@ class LibraryAttendance
         return $this;
     }
 
-    public function getHour(): ?\DateTimeInterface
+    public function getHour()
     {
-        return $this->hour;
+        return date_format($this->hour, 'H:i');
     }
 
     public function setHour(\DateTimeInterface $hour): self

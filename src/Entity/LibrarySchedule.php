@@ -61,9 +61,9 @@ class LibrarySchedule
         return $this->id;
     }
 
-    public function getOpeningTime(): ?\DateTimeInterface
+    public function getOpeningTime()
     {
-        return $this->openingTime;
+        return date_format($this->openingTime, 'H:i');
     }
 
     public function setOpeningTime(\DateTimeInterface $openingTime): self
@@ -73,9 +73,9 @@ class LibrarySchedule
         return $this;
     }
 
-    public function getClosingTime(): ?\DateTimeInterface
+    public function getClosingTime()
     {
-        return $this->closingTime;
+        return date_format($this->closingTime, 'H:i');
     }
 
     public function setClosingTime(\DateTimeInterface $closingTime): self
