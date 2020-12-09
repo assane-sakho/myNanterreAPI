@@ -25,35 +25,19 @@ class CrousProduct
     private $id;
 
     /**
-     * @var \Product
-     *
-     * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     * })
-     */
-    private $product;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Crous::class, inversedBy="crousProducts")
      */
     private $crous;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="crousProducts")
+     * @Groups({"crous:read", "crous:write"})
+     */
+    private $product;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getCrous(): ?Crous
@@ -64,6 +48,18 @@ class CrousProduct
     public function setCrous(?Crous $crous): self
     {
         $this->crous = $crous;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
 
         return $this;
     }
