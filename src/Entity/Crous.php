@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -45,6 +47,17 @@ class Crous
      */
     private $location;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CrousSchedule::class, mappedBy="crous")
+     * @Groups({"crous:read", "crous:write"})
+     */
+    private $crousSchedules;
+
+    public function __construct()
+    {
+        $this->crousSchedules = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +83,36 @@ class Crous
     public function setLocation(string $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CrousSchedule[]
+     */
+    public function getCrousSchedules(): Collection
+    {
+        return $this->crousSchedules;
+    }
+
+    public function addCrousSchedule(CrousSchedule $crousSchedule): self
+    {
+        if (!$this->crousSchedules->contains($crousSchedule)) {
+            $this->crousSchedules[] = $crousSchedule;
+            $crousSchedule->setCrous($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCrousSchedule(CrousSchedule $crousSchedule): self
+    {
+        if ($this->crousSchedules->removeElement($crousSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($crousSchedule->getCrous() === $this) {
+                $crousSchedule->setCrous(null);
+            }
+        }
 
         return $this;
     }
