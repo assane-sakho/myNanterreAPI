@@ -53,9 +53,16 @@ class Crous
      */
     private $crousSchedules;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CrousProduct::class, mappedBy="crous")
+     * @Groups({"crous:read", "crous:write"})
+     */
+    private $crousProducts;
+
     public function __construct()
     {
         $this->crousSchedules = new ArrayCollection();
+        $this->crousProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +118,36 @@ class Crous
             // set the owning side to null (unless already changed)
             if ($crousSchedule->getCrous() === $this) {
                 $crousSchedule->setCrous(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CrousProduct[]
+     */
+    public function getCrousProducts(): Collection
+    {
+        return $this->crousProducts;
+    }
+
+    public function addCrousProduct(CrousProduct $crousProduct): self
+    {
+        if (!$this->crousProducts->contains($crousProduct)) {
+            $this->crousProducts[] = $crousProduct;
+            $crousProduct->setCrous($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCrousProduct(CrousProduct $crousProduct): self
+    {
+        if ($this->crousProducts->removeElement($crousProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($crousProduct->getCrous() === $this) {
+                $crousProduct->setCrous(null);
             }
         }
 

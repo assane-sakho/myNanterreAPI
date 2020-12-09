@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * CrousProduct
@@ -34,12 +35,7 @@ class CrousProduct
     private $product;
 
     /**
-     * @var \Crous
-     *
-     * @ORM\ManyToOne(targetEntity="Crous")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="crous_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Crous::class, inversedBy="crousProducts")
      */
     private $crous;
 
@@ -71,6 +67,5 @@ class CrousProduct
 
         return $this;
     }
-
 
 }
