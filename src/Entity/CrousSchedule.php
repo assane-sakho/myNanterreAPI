@@ -26,14 +26,14 @@ class CrousSchedule
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="opening_time", type="time", nullable=false)
+     * @ORM\Column(name="opening_time", type="datetime", nullable=false)
      */
     private $openingTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="closing_time", type="time", nullable=false)
+     * @ORM\Column(name="closing_time", type="datetime", nullable=false)
      */
     private $closingTime;
 

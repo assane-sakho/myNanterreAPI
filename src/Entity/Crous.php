@@ -4,14 +4,19 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Crous
  *
  * @ORM\Table(name="crous")
  * @ORM\Entity
- * @ApiResource
- */
+ * @ApiResource(
+ *     normalizationContext={"groups"={"crous:read"}},
+ *     denormalizationContext={"groups"={"crous:write"}}
+ * )
+ *  */
+
 class Crous
 {
     /**
@@ -20,6 +25,7 @@ class Crous
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $id;
 
@@ -27,6 +33,7 @@ class Crous
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $name;
 
@@ -34,6 +41,7 @@ class Crous
      * @var string
      *
      * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $location;
 
