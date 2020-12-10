@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * CrousProductAvailability
@@ -20,13 +21,15 @@ class CrousProductAvailability
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $id;
 
     /**
      * @var binary
      *
-     * @ORM\Column(name="isAvailable", type="binary", nullable=false)
+     * @ORM\Column(name="isAvailable", type="boolean", nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $isavailable;
 
@@ -34,16 +37,12 @@ class CrousProductAvailability
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $date;
 
     /**
-     * @var \CrousProduct
-     *
-     * @ORM\ManyToOne(targetEntity="CrousProduct")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="crous_product_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=CrousProduct::class, inversedBy="crousProductAvailabilities")
      */
     private $crousProduct;
 
@@ -87,6 +86,4 @@ class CrousProductAvailability
 
         return $this;
     }
-
-
 }
