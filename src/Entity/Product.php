@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Product
@@ -19,7 +22,7 @@ class Product
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $id;
 
@@ -27,6 +30,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $name;
 
@@ -34,8 +38,19 @@ class Product
      * @var string|null
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $price;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CrousProduct::class, mappedBy="product")
+     */
+    private $crousProducts;
+
+    public function __construct()
+    {
+        $this->crousProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,6 +77,36 @@ class Product
     public function setPrice(?string $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CrousProduct[]
+     */
+    public function getCrousProducts(): Collection
+    {
+        return $this->crousProducts;
+    }
+
+    public function addCrousProduct(CrousProduct $crousProduct): self
+    {
+        if (!$this->crousProducts->contains($crousProduct)) {
+            $this->crousProducts[] = $crousProduct;
+            $crousProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCrousProduct(CrousProduct $crousProduct): self
+    {
+        if ($this->crousProducts->removeElement($crousProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($crousProduct->getProduct() === $this) {
+                $crousProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }

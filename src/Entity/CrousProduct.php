@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * CrousProduct
@@ -20,44 +23,35 @@ class CrousProduct
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $id;
 
     /**
-     * @var \Product
-     *
-     * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Crous::class, inversedBy="crousProducts")
+     */
+    private $crous;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="crousProducts")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $product;
 
     /**
-     * @var \Crous
-     *
-     * @ORM\ManyToOne(targetEntity="Crous")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="crous_id", referencedColumnName="id")
-     * })
+     * @ORM\OneToMany(targetEntity=CrousProductAvailability::class, mappedBy="crousProduct")
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $crous;
+    private $crousProductAvailabilities;
+
+    public function __construct()
+    {
+        $this->crousProductAvailabilities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getCrous(): ?Crous
@@ -72,5 +66,46 @@ class CrousProduct
         return $this;
     }
 
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CrousProductAvailability[]
+     */
+    public function getCrousProductAvailabilities(): Collection
+    {
+        return $this->crousProductAvailabilities;
+    }
+
+    public function addCrousProductAvailability(CrousProductAvailability $crousProductAvailability): self
+    {
+        if (!$this->crousProductAvailabilities->contains($crousProductAvailability)) {
+            $this->crousProductAvailabilities[] = $crousProductAvailability;
+            $crousProductAvailability->setCrousProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCrousProductAvailability(CrousProductAvailability $crousProductAvailability): self
+    {
+        if ($this->crousProductAvailabilities->removeElement($crousProductAvailability)) {
+            // set the owning side to null (unless already changed)
+            if ($crousProductAvailability->getCrousProduct() === $this) {
+                $crousProductAvailability->setCrousProduct(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

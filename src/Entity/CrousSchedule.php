@@ -4,36 +4,39 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * CrousSchedule
  *
  * @ORM\Table(name="crous_schedule", indexes={@ORM\Index(name="crous_id", columns={"crous_id"})})
- * @ORM\Entity
  * @ApiResource
+ * @ORM\Entity
  */
 class CrousSchedule
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
     private $id;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="opening_time", type="time", nullable=false)
+     * @ORM\Column(name="opening_time", type="datetime", nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $openingTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="closing_time", type="time", nullable=false)
+     * @ORM\Column(name="closing_time", type="datetime", nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $closingTime;
 
@@ -41,16 +44,13 @@ class CrousSchedule
      * @var string
      *
      * @ORM\Column(name="days", type="string", length=17, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
     private $days;
 
     /**
-     * @var \Crous
-     *
-     * @ORM\ManyToOne(targetEntity="Crous")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="crous_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity=Crous::class, inversedBy="crousSchedules")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $crous;
 
@@ -106,6 +106,4 @@ class CrousSchedule
 
         return $this;
     }
-
-
 }
