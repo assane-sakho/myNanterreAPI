@@ -106,9 +106,9 @@ class User
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate()
     {
-        return $this->birthDate;
+        return $this->birthDate->format("Y-m-d H:i");
     }
 
     public function setBirthDate(?\DateTimeInterface $birthDate): self

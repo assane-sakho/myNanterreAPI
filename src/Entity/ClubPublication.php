@@ -65,9 +65,9 @@ class ClubPublication
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate()
     {
-        return $this->date;
+        return $this->date->format("Y-m-d H:i");
     }
 
     public function setDate(\DateTimeInterface $date): self
