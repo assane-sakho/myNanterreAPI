@@ -41,7 +41,7 @@ class Club
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="blob", length=16777215, nullable=true)
+     * @ORM\Column(name="image", type="blob", nullable=true)
      * @Groups({"club:read", "club:write"})
      */
     private $image;
@@ -130,7 +130,7 @@ class Club
 
     public function getImage()
     {
-        return $this->image;
+        return is_resource($this->image) ? stream_get_contents($this->image) : $this->image;
     }
 
     public function setImage($image): self
