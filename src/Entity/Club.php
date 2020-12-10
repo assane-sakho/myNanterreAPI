@@ -49,10 +49,10 @@ class Club
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creationDate", type="datetime", nullable=false)
+     * @ORM\Column(name="creation_date", type="datetime", nullable=false)
      * @Groups({"club:read", "club:write"})
      */
-    private $creationdate;
+    private $creationDate;
 
     /**
      * @var string
@@ -140,14 +140,14 @@ class Club
         return $this;
     }
 
-    public function getCreationdate()
+    public function getCreationDate()
     {
-        return $this->creationdate->format("Y-m-d H:i");
+        return $this->creationDate->format("Y-m-d H:i");
     }
 
-    public function setCreationdate(\DateTimeInterface $creationdate): self
+    public function setCreationDate(\DateTimeInterface $creationDate): self
     {
-        $this->creationdate = $creationdate;
+        $this->creationDate = $creationDate;
 
         return $this;
     }
