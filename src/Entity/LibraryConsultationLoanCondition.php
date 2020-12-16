@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\LibraryConsultationLoanConditionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table(name="library_consultation_loan_condition", indexes={@ORM\Index(name="library_id", columns={"library_id"})})
- * @ApiResource
  * @ORM\Entity
  */
 class LibraryConsultationLoanCondition

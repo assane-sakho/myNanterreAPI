@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * CrousSchedule
  *
  * @ORM\Table(name="crous_schedule", indexes={@ORM\Index(name="crous_id", columns={"crous_id"})})
- * @ApiResource
  * @ORM\Entity
  */
 class CrousSchedule

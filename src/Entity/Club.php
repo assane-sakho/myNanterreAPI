@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="club", indexes={@ORM\Index(name="club_type_id", columns={"club_type_id"}), @ORM\Index(name="creator_id", columns={"creator_id"})})
  * @ORM\Entity
  * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
  *     normalizationContext={"groups"={"club:read"}},
  *     denormalizationContext={"groups"={"club:write"}}
  * )

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -11,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="crous_product_availability", indexes={@ORM\Index(name="crous_product_id", columns={"crous_product_id"})})
  * @ORM\Entity
- * @ApiResource
  */
 class CrousProductAvailability
 {

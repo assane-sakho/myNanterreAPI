@@ -10,7 +10,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *
  * @ORM\Table(name="link_type")
  * @ORM\Entity
- * @ApiResource
  */
 class LinkType
 {

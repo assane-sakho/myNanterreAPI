@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="crous")
  * @ORM\Entity
  * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
  *     normalizationContext={"groups"={"crous:read"}},
  *     denormalizationContext={"groups"={"crous:write"}}
  * )
