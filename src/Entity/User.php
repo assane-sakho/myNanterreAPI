@@ -40,27 +40,11 @@ class User
     private $lastName;
 
     /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="birthdate", type="datetime", nullable=true)
-     * @Groups({"club:read", "club:write"})
-     */
-    private $birthDate;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="university_id", type="integer", nullable=false)
-     * @Groups({"club:read", "club:write"})
-     */
-    private $universityId;
-
-    /**
      * @var \Grade
      *
      * @ORM\ManyToOne(targetEntity="Grade")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="grade_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="grade_id", referencedColumnName="id", nullable=true)
      * })
      * @Groups({"club:read", "club:write"})
      */
@@ -102,30 +86,6 @@ class User
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getBirthDate()
-    {
-        return $this->birthDate->format("Y-m-d H:i");
-    }
-
-    public function setBirthDate(?\DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    public function getUniversityId(): ?int
-    {
-        return $this->universityId;
-    }
-
-    public function setUniversityId(int $universityId): self
-    {
-        $this->universityId = $universityId;
 
         return $this;
     }
