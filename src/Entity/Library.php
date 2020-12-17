@@ -14,10 +14,16 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="library", indexes={@ORM\Index(name="building_id", columns={"building_id"})})
  * @ORM\Entity
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"library:read"}},
- *     denormalizationContext={"groups"={"library:write"}}
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"library:read", "library:write"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"librariesInfo:read"}}
+ *         }
+ *     }
  * )
  * 
  *  */
@@ -31,7 +37,7 @@ class Library
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"library:read", "library:write"})
+     * @Groups({"librariesInfo:read", "library:read", "library:write"})
      */
     private $id;
 
@@ -39,7 +45,7 @@ class Library
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"library:read", "library:write"})
+     * @Groups({"librariesInfo:read", "library:read", "library:write"})
      */
     private $name;
 
