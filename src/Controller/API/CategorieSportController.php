@@ -3,24 +3,26 @@
 namespace App\Controller\API;
 
 use App\Repository\CategorieSportRepository;
+use App\Service\ResponseService;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 class CategorieSportController extends AbstractController
 {
+    private $responseService;
+
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
+
     /**
      * @Route("/api/getCategorieSport", name="api_sport_categorie")
      */
-    public function getCategorieSport(CategorieSportRepository $categorieSportRepository, NormalizerInterface $normalize)
+    public function getCategorieSport(CategorieSportRepository $categorieSportRepository)
     {
         $sportCategories = $categorieSportRepository->findAll();
-        $sportCategoriesNormalises = $normalize->normalize($sportCategories);
-        $json = json_encode($sportCategoriesNormalises, JSON_PRETTY_PRINT);
-
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return $this->responseService->getJSONResponse($sportCategories);
     }
 }

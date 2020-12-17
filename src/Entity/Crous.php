@@ -2,197 +2,156 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Crous
  *
  * @ORM\Table(name="crous")
- * @ORM\Entity(repositoryClass="App\Repository\CrousRepository")
- */
+ * @ORM\Entity
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"crous:read"}},
+ *     denormalizationContext={"groups"={"crous:write"}}
+ * )
+ *  */
+
 class Crous
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id_bat", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $idBat;
+    private $id;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="batiment", type="string", length=30, nullable=true)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $batiment;
+    private $name;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="lieu", type="string", length=30, nullable=true)
+     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $lieu;
+    private $location;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="horaire", type="string", length=70, nullable=true)
+     * @ORM\OneToMany(targetEntity=CrousSchedule::class, mappedBy="crous")
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $horaire;
+    private $crousSchedules;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ventes", type="string", length=200, nullable=true)
+     * @ORM\OneToMany(targetEntity=CrousProduct::class, mappedBy="crous")
+     * @Groups({"crous:read", "crous:write"})
      */
-    private $ventes;
+    private $crousProducts;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="frequentation", type="integer", nullable=true)
-     */
-    private $frequentation;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="ouverture", type="integer", nullable=true)
-     */
-    private $ouverture;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="fermeture", type="integer", nullable=true)
-     */
-    private $fermeture;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="burger", type="integer", nullable=true)
-     */
-    private $burger;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="vote", type="string", length=50, nullable=true)
-     */
-    private $vote;
-
-    public function getIdBat(): ?int
+    public function __construct()
     {
-        return $this->idBat;
+        $this->crousSchedules = new ArrayCollection();
+        $this->crousProducts = new ArrayCollection();
     }
 
-    public function getBatiment(): ?string
+    public function getId(): ?int
     {
-        return $this->batiment;
+        return $this->id;
     }
 
-    public function setBatiment(?string $batiment): self
+    public function getName(): ?string
     {
-        $this->batiment = $batiment;
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getLieu(): ?string
+    public function getLocation(): ?string
     {
-        return $this->lieu;
+        return $this->location;
     }
 
-    public function setLieu(?string $lieu): self
+    public function setLocation(string $location): self
     {
-        $this->lieu = $lieu;
+        $this->location = $location;
 
         return $this;
     }
 
-    public function getHoraire(): ?string
+    /**
+     * @return Collection|CrousSchedule[]
+     */
+    public function getCrousSchedules(): Collection
     {
-        return $this->horaire;
+        return $this->crousSchedules;
     }
 
-    public function setHoraire(?string $horaire): self
+    public function addCrousSchedule(CrousSchedule $crousSchedule): self
     {
-        $this->horaire = $horaire;
+        if (!$this->crousSchedules->contains($crousSchedule)) {
+            $this->crousSchedules[] = $crousSchedule;
+            $crousSchedule->setCrous($this);
+        }
 
         return $this;
     }
 
-    public function getVentes(): ?string
+    public function removeCrousSchedule(CrousSchedule $crousSchedule): self
     {
-        return $this->ventes;
-    }
-
-    public function setVentes(?string $ventes): self
-    {
-        $this->ventes = $ventes;
+        if ($this->crousSchedules->removeElement($crousSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($crousSchedule->getCrous() === $this) {
+                $crousSchedule->setCrous(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getFrequentation(): ?int
+    /**
+     * @return Collection|CrousProduct[]
+     */
+    public function getCrousProducts(): Collection
     {
-        return $this->frequentation;
+        return $this->crousProducts;
     }
 
-    public function setFrequentation(?int $frequentation): self
+    public function addCrousProduct(CrousProduct $crousProduct): self
     {
-        $this->frequentation = $frequentation;
+        if (!$this->crousProducts->contains($crousProduct)) {
+            $this->crousProducts[] = $crousProduct;
+            $crousProduct->setCrous($this);
+        }
 
         return $this;
     }
 
-    public function getOuverture(): ?int
+    public function removeCrousProduct(CrousProduct $crousProduct): self
     {
-        return $this->ouverture;
-    }
-
-    public function setOuverture(?int $ouverture): self
-    {
-        $this->ouverture = $ouverture;
-
-        return $this;
-    }
-
-    public function getFermeture(): ?int
-    {
-        return $this->fermeture;
-    }
-
-    public function setFermeture(?int $fermeture): self
-    {
-        $this->fermeture = $fermeture;
-
-        return $this;
-    }
-
-    public function getBurger(): ?int
-    {
-        return $this->burger;
-    }
-
-    public function setBurger(?int $burger): self
-    {
-        $this->burger = $burger;
-
-        return $this;
-    }
-
-    public function getVote(): ?string
-    {
-        return $this->vote;
-    }
-
-    public function setVote(?string $vote): self
-    {
-        $this->vote = $vote;
+        if ($this->crousProducts->removeElement($crousProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($crousProduct->getCrous() === $this) {
+                $crousProduct->setCrous(null);
+            }
+        }
 
         return $this;
     }
