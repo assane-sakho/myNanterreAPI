@@ -40,17 +40,6 @@ class User
     private $lastName;
 
     /**
-     * @var \Grade
-     *
-     * @ORM\ManyToOne(targetEntity="Grade")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="grade_id", referencedColumnName="id", nullable=true)
-     * })
-     * @Groups({"club:read", "club:write"})
-     */
-    private $grade;
-
-    /**
      * @var \UserType
      *
      * @ORM\ManyToOne(targetEntity="UserType")
@@ -86,18 +75,6 @@ class User
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getGrade(): ?Grade
-    {
-        return $this->grade;
-    }
-
-    public function setGrade(?Grade $grade): self
-    {
-        $this->grade = $grade;
 
         return $this;
     }
