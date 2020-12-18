@@ -108,6 +108,30 @@ class Club
      */
     private $clubPublications;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contact", type="string", length=255, nullable=true)
+     * @Groups({"club:read", "club:write"})
+     */
+    private $contact;
+
+       /**
+     * @var string
+     *
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
+     * @Groups({"club:read", "club:write"})
+     */
+    private $website;
+
+       /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=255, nullable=true)
+     * @Groups({"club:read", "club:write"})
+     */
+    private $mail;
+
     public function __construct()
     {
         $this->clubPublications = new ArrayCollection();
@@ -240,6 +264,42 @@ class Club
                 $clubPublication->setClub(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getContact(): ?string
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?string $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): self
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(?string $mail): self
+    {
+        $this->mail = $mail;
 
         return $this;
     }
