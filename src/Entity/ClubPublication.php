@@ -4,11 +4,23 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 /**
  * ClubPublication
  *
  * @ORM\Table(name="club_publication", indexes={@ORM\Index(name="club_id", columns={"club_id"})})
  * @ORM\Entity
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"club_publication:read"}}
+ *         }
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"club": "exact"})
  */
 class ClubPublication
 {
@@ -18,7 +30,7 @@ class ClubPublication
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "club_publication:read"})
      */
     private $id;
 
@@ -26,7 +38,7 @@ class ClubPublication
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "club_publication:read"})
      */
     private $message;
 
@@ -34,7 +46,7 @@ class ClubPublication
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "club_publication:read"})
      */
     private $date;
 

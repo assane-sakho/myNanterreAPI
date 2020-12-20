@@ -19,7 +19,7 @@ class User
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $id;
 
@@ -27,7 +27,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $firstName;
 
@@ -35,7 +35,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $lastName;
 
@@ -46,7 +46,7 @@ class User
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_type_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $userType;
 
