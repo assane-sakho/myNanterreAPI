@@ -14,10 +14,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="club", indexes={@ORM\Index(name="club_type_id", columns={"club_type_id"}), @ORM\Index(name="creator_id", columns={"creator_id"})})
  * @ORM\Entity
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"club:read"}},
- *     denormalizationContext={"groups"={"club:write"}}
+ *     attributes={
+ *          "order"={"name"}
+ *      },
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"club:read", "club:write"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"clubInfos:read"}}
+ *         }
+ *     }
  * )
  */
 class Club
@@ -28,7 +37,7 @@ class Club
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $id;
 
@@ -36,7 +45,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $name;
 
@@ -44,7 +53,7 @@ class Club
      * @var string|null
      *
      * @ORM\Column(name="image", type="blob", nullable=true)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $image;
 
@@ -52,7 +61,7 @@ class Club
      * @var \DateTime
      *
      * @ORM\Column(name="creation_date", type="datetime", nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $creationDate;
 
@@ -60,7 +69,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $description;
 
@@ -68,7 +77,7 @@ class Club
      * @var binary
      *
      * @ORM\Column(name="is_certificate", type="boolean", nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $isCertificate;
 
@@ -76,7 +85,7 @@ class Club
      * @var binary
      *
      * @ORM\Column(name="is_validate", type="boolean", nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $isValidate;
 
@@ -87,7 +96,7 @@ class Club
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $creator;
 
@@ -98,7 +107,7 @@ class Club
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="club_type_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $clubType;
 
