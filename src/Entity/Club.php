@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Service\ImageService;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -49,13 +50,22 @@ class Club
      */
     private $name;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
+     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     */
+    private $imageUrl;
+
     /**
      * @var string|null
      *
-     * @ORM\Column(name="image", type="blob", nullable=true)
+     * @ORM\Column(name="image_bytes", type="blob", nullable=true)
      * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
-    private $image;
+    private $imageBytes;
 
     /**
      * @var \DateTime
@@ -163,16 +173,32 @@ class Club
         return $this;
     }
 
-    public function getImage()
+    public function getImageUrl(): ?string
     {
-        return is_resource($this->image) ? stream_get_contents($this->image) : $this->image;
+        return $this->imageUrl;
     }
 
-    public function setImage($image): self
+    public function setImageUrl(string $imageUrl): self
     {
-        $this->image = $image;
+        $this->imageUrl = $imageUrl;
 
         return $this;
+    }
+
+
+    public function getImageBytes()
+    {
+        if($this->imageBytes == null && $this->imageUrl == null )
+        {
+            return $_ENV['NANTERRE_LOGO_BASE64'];
+        }
+        else if($this->imageUrl != null)
+        {
+            $a = new ImageService();
+            return $a->getImageBytesFromUrl($this->imageUrl);
+        }
+      
+        return $this->imageBytes;
     }
 
     public function getCreationDate()
