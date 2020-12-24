@@ -14,6 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Table(name="club_publication", indexes={@ORM\Index(name="club_id", columns={"club_id"})})
  * @ORM\Entity
  * @ApiResource(
+ *     attributes={"pagination_enabled"=false},
  *     collectionOperations={
  *         "get"={
  *             "normalization_context"={"groups"={"club_publication:read"}}
