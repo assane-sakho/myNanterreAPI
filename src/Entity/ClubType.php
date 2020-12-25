@@ -4,12 +4,26 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * ClubType
  *
  * @ORM\Table(name="club_type")
  * @ORM\Entity
+ * @ApiResource(
+ *      attributes={"pagination_enabled"=false},
+ *      itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"clubType:read"}}
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"clubType:read"}}
+ *         }
+ *     }
+ * ) 
  */
 class ClubType
 {
@@ -19,7 +33,7 @@ class ClubType
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "clubType:read"})
      */
     private $id;
 
@@ -27,7 +41,7 @@ class ClubType
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "clubType:read"})
      */
     private $name;
 

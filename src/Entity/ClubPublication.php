@@ -31,7 +31,7 @@ class ClubPublication
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
      */
     private $id;
 
@@ -39,7 +39,7 @@ class ClubPublication
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
      */
     private $message;
 
@@ -47,7 +47,7 @@ class ClubPublication
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"club:read", "club:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
      */
     private $date;
 
