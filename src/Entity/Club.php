@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Service\ImageService;
+use DateTime;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -20,12 +21,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      },
  *     itemOperations={
  *          "get"={
- *             "normalization_context"={"groups"={"club:read", "club:write"}}
- *          }
+ *             "normalization_context"={"groups"={"completeClub:read"}}
+ *          },
+ *          "put" = {
+ *             "normalization_context"={"groups"={"completeClub:write"}}
+ *          },
+ *         "delete"
  *     },
  *     collectionOperations={
  *         "get"={
- *             "normalization_context"={"groups"={"clubInfos:read"}}
+ *             "normalization_context"={"groups"={"simpleCLub:read"}}
+ *         },
+ *         "post" = {
+ *             "normalization_context"={"groups"={"completeClub:write"}}
  *         }
  *     }
  * )
@@ -38,7 +46,7 @@ class Club
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $id;
 
@@ -46,7 +54,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $name;
 
@@ -55,7 +63,6 @@ class Club
      * @var string
      *
      * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
      */
     private $imageUrl;
 
@@ -63,7 +70,7 @@ class Club
      * @var string|null
      *
      * @ORM\Column(name="image_bytes", type="blob", nullable=true)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $imageBytes;
 
@@ -71,7 +78,7 @@ class Club
      * @var \DateTime
      *
      * @ORM\Column(name="creation_date", type="datetime", nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $creationDate;
 
@@ -79,7 +86,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $description;
 
@@ -87,7 +94,7 @@ class Club
      * @var binary
      *
      * @ORM\Column(name="is_certificate", type="boolean", nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $isCertificate;
 
@@ -95,7 +102,7 @@ class Club
      * @var binary
      *
      * @ORM\Column(name="is_validate", type="boolean", nullable=false)
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $isValidate;
 
@@ -106,7 +113,7 @@ class Club
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $creator;
 
@@ -117,13 +124,13 @@ class Club
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="club_type_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write", "clubInfos:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $clubType;
 
     /**
-     * @ORM\OneToMany(targetEntity=ClubPublication::class, mappedBy="club")
-     * @Groups({"club:read", "club:write"})
+     * @ORM\OneToMany(targetEntity=ClubPublication::class, mappedBy="club", cascade="remove")
+     * @Groups({"completeClub:read"})
      */
     private $clubPublications;
 
@@ -131,7 +138,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="contact", type="string", length=255, nullable=true)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $contact;
 
@@ -139,7 +146,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="website", type="string", length=255, nullable=true)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $website;
 
@@ -147,13 +154,16 @@ class Club
      * @var string
      *
      * @ORM\Column(name="mail", type="string", length=255, nullable=true)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
      */
     private $mail;
 
     public function __construct()
     {
         $this->clubPublications = new ArrayCollection();
+        $this->creationDate = new DateTime();
+        $this->isCertificate = false;
+        $this->isValidate = false;
     }
 
     public function getId(): ?int
@@ -173,32 +183,19 @@ class Club
         return $this;
     }
 
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl(string $imageUrl): self
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-
     public function getImageBytes()
     {
         if($this->imageBytes == null && $this->imageUrl == null )
         {
             return $_ENV['NANTERRE_LOGO_BASE64'];
         }
-        else if($this->imageUrl != null)
+        else if( $this->imageBytes != null)
         {
-            $a = new ImageService();
-            return $a->getImageBytesFromUrl($this->imageUrl);
+            return $this->imageBytes;
         }
-      
-        return $this->imageBytes;
+       
+        $imageService = new ImageService();
+        return $imageService->getImageBytesFromUrl($this->imageUrl);
     }
 
     public function getCreationDate()
