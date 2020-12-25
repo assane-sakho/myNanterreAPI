@@ -65,6 +65,14 @@ class ClubPublication
     private $date;
 
     /**
+     * @var binary
+     *
+     * @ORM\Column(name="isEdited", type="boolean", nullable=false)
+     * @Groups({"completeCrous:read"})
+     */
+    private $isEdited;
+
+    /**
      * @var \Club
      *
      * @ORM\ManyToOne(targetEntity="Club", inversedBy="clubPublications")
@@ -77,6 +85,7 @@ class ClubPublication
     public function __construct()
     {
         $this->date = new DateTime();
+        $this->isEdited = false;
     }
 
 
@@ -105,6 +114,18 @@ class ClubPublication
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIsEdited()
+    {
+        return $this->isEdited;
+    }
+
+    public function setIsEdited($isEdited): self
+    {
+        $this->isEdited = $isEdited;
 
         return $this;
     }

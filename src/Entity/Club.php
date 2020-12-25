@@ -337,4 +337,10 @@ class Club
     }
 
 
+    public function setImageBytes($imageBytes): self
+    {
+        $this->imageBytes = $imageBytes;
+
+        return $this;
+    }
 }
