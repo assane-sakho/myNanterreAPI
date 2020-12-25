@@ -22,7 +22,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *          "get"={
  *             "normalization_context"={"groups"={"completeClub:read"}}
- *          }
+ *          },
+ *          "put" = {
+ *             "normalization_context"={"groups"={"completeClub:write"}}
+ *          },
+ *         "delete"
  *     },
  *     collectionOperations={
  *         "get"={
@@ -30,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *         "post" = {
  *             "normalization_context"={"groups"={"completeClub:write"}}
- *         },
+ *         }
  *     }
  * )
  */
