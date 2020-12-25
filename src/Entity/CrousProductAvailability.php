@@ -19,7 +19,7 @@ class CrousProductAvailability
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $id;
 
@@ -27,7 +27,7 @@ class CrousProductAvailability
      * @var binary
      *
      * @ORM\Column(name="isAvailable", type="boolean", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $isavailable;
 
@@ -35,7 +35,7 @@ class CrousProductAvailability
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $date;
 

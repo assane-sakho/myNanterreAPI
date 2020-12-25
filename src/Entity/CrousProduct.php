@@ -21,7 +21,7 @@ class CrousProduct
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $id;
 
@@ -32,13 +32,13 @@ class CrousProduct
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="crousProducts")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $product;
 
     /**
      * @ORM\OneToMany(targetEntity=CrousProductAvailability::class, mappedBy="crousProduct")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $crousProductAvailabilities;
 

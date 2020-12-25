@@ -14,10 +14,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="crous")
  * @ORM\Entity
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"crous:read"}},
- *     denormalizationContext={"groups"={"crous:write"}}
+ *     attributes={"pagination_enabled"=false},
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"completeCrous:read"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"simpleCrous:read"}}
+ *         }
+ *     }
  * )
  *  */
 
@@ -29,7 +36,7 @@ class Crous
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $id;
 
@@ -37,7 +44,7 @@ class Crous
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $name;
 
@@ -45,26 +52,33 @@ class Crous
      * @var string
      *
      * @ORM\Column(name="location", type="string", length=255, nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $location;
 
     /**
      * @ORM\OneToMany(targetEntity=CrousSchedule::class, mappedBy="crous")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $crousSchedules;
 
     /**
      * @ORM\OneToMany(targetEntity=CrousProduct::class, mappedBy="crous")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $crousProducts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CrousAttendance::class, mappedBy="crous")
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
+     */
+    private $crousAttendance;
 
     public function __construct()
     {
         $this->crousSchedules = new ArrayCollection();
         $this->crousProducts = new ArrayCollection();
+        $this->crousAttendance = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +164,36 @@ class Crous
             // set the owning side to null (unless already changed)
             if ($crousProduct->getCrous() === $this) {
                 $crousProduct->setCrous(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|crousAttendance[]
+     */
+    public function getCrousAttendance(): Collection
+    {
+        return $this->crousAttendance;
+    }
+
+    public function addCrousAttendance(crousAttendance $crousAttendance): self
+    {
+        if (!$this->crousAttendance->contains($crousAttendance)) {
+            $this->crousAttendance[] = $crousAttendance;
+            $crousAttendance->setCrous($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCrousAttendance(crousAttendance $crousAttendance): self
+    {
+        if ($this->crousAttendance->removeElement($crousAttendance)) {
+            // set the owning side to null (unless already changed)
+            if ($crousAttendance->getCrous() === $this) {
+                $crousAttendance->setCrous(null);
             }
         }
 

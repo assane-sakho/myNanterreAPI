@@ -336,5 +336,24 @@ class Club
         return $this;
     }
 
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    public function setImageBytes($imageBytes): self
+    {
+        $this->imageBytes = $imageBytes;
+
+        return $this;
+    }
+
 
 }
