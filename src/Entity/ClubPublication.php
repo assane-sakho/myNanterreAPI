@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use DateTime;
 
 /**
  * ClubPublication
@@ -15,9 +16,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ORM\Entity
  * @ApiResource(
  *     attributes={"pagination_enabled"=false},
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"club_publication:read"}}
+ *         },
+ *          "put" = {
+ *             "normalization_context"={"groups"={"club_publication:write"}}
+ *          },
+ *         "delete"
+ *     },
  *     collectionOperations={
  *         "get"={
  *             "normalization_context"={"groups"={"club_publication:read"}}
+ *         },
+ *         "post" = {
+ *             "normalization_context"={"groups"={"club_publication:write"}}
  *         }
  *     }
  * )
@@ -31,7 +44,7 @@ class ClubPublication
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $id;
 
@@ -39,7 +52,7 @@ class ClubPublication
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255, nullable=false)
-     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $message;
 
@@ -47,7 +60,7 @@ class ClubPublication
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $date;
 
@@ -60,6 +73,12 @@ class ClubPublication
      * })
      */
     private $club;
+
+    public function __construct()
+    {
+        $this->date = new DateTime();
+    }
+
 
     public function getId(): ?int
     {

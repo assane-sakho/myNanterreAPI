@@ -129,7 +129,7 @@ class Club
     private $clubType;
 
     /**
-     * @ORM\OneToMany(targetEntity=ClubPublication::class, mappedBy="club")
+     * @ORM\OneToMany(targetEntity=ClubPublication::class, mappedBy="club", cascade="remove")
      * @Groups({"completeClub:read"})
      */
     private $clubPublications;
