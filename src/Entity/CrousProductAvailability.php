@@ -19,7 +19,7 @@ class CrousProductAvailability
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeCrous:read"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $id;
 
@@ -27,15 +27,15 @@ class CrousProductAvailability
      * @var binary
      *
      * @ORM\Column(name="isAvailable", type="boolean", nullable=false)
-     * @Groups({"completeCrous:read"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
-    private $isavailable;
+    private $isAvailable;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"completeCrous:read"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $date;
 
@@ -49,14 +49,14 @@ class CrousProductAvailability
         return $this->id;
     }
 
-    public function getIsavailable()
+    public function getIsAvailable()
     {
-        return $this->isavailable;
+        return $this->isAvailable;
     }
 
-    public function setIsavailable($isavailable): self
+    public function setIsAvailable($isAvailable): self
     {
-        $this->isavailable = $isavailable;
+        $this->isAvailable = $isAvailable;
 
         return $this;
     }
