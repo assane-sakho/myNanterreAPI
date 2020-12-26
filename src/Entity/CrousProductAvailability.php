@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -10,6 +12,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="crous_product_availability", indexes={@ORM\Index(name="crous_product_id", columns={"crous_product_id"})})
  * @ORM\Entity
+ * @ApiResource(
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"crousProductAvailability:read"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"crousProductAvailability:read"}}
+ *         },
+ *         "post" = {
+ *             "normalization_context"={"groups"={"crousProductAvailability:write"}}
+ *         }
+ *     }
+ * )
  */
 class CrousProductAvailability
 {
@@ -27,7 +44,7 @@ class CrousProductAvailability
      * @var binary
      *
      * @ORM\Column(name="isAvailable", type="boolean", nullable=false)
-     * @Groups({"completeCrous:read", "crous_product:read"})
+     * @Groups({"completeCrous:read", "crous_product:read", "crousProductAvailability:write"})
      */
     private $isAvailable;
 
@@ -43,6 +60,11 @@ class CrousProductAvailability
      * @ORM\ManyToOne(targetEntity=CrousProduct::class, inversedBy="crousProductAvailabilities")
      */
     private $crousProduct;
+
+    public function __construct()
+    {
+        $this->date = new DateTime();
+    }
 
     public function getId(): ?int
     {
