@@ -83,9 +83,8 @@ class CrousProductAvailability
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
+    public function getDate(){
+        return $this->date->format('Y-m-d H:i:s');
     }
 
     public function setDate(\DateTimeInterface $date): self
