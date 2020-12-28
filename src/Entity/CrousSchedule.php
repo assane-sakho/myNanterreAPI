@@ -72,7 +72,7 @@ class CrousSchedule
 
     public function getClosingTime()
     {
-        return date_format($this->openingTime, 'H:i');
+        return date_format($this->closingTime, 'H:i');
     }
 
     public function setClosingTime(\DateTimeInterface $closingTime): self
