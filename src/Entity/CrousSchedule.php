@@ -18,7 +18,7 @@ class CrousSchedule
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read"})
      */
     private $id;
 
@@ -26,7 +26,7 @@ class CrousSchedule
      * @var \DateTime
      *
      * @ORM\Column(name="opening_time", type="datetime", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $openingTime;
 
@@ -34,7 +34,7 @@ class CrousSchedule
      * @var \DateTime
      *
      * @ORM\Column(name="closing_time", type="datetime", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $closingTime;
 
@@ -42,7 +42,7 @@ class CrousSchedule
      * @var string
      *
      * @ORM\Column(name="days", type="string", length=17, nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $days;
 
@@ -57,9 +57,10 @@ class CrousSchedule
         return $this->id;
     }
 
-    public function getOpeningTime(): ?\DateTimeInterface
+    public function getOpeningTime()
     {
-        return $this->openingTime;
+        return date_format($this->openingTime, 'H:i');
+
     }
 
     public function setOpeningTime(\DateTimeInterface $openingTime): self
@@ -69,9 +70,9 @@ class CrousSchedule
         return $this;
     }
 
-    public function getClosingTime(): ?\DateTimeInterface
+    public function getClosingTime()
     {
-        return $this->closingTime;
+        return date_format($this->openingTime, 'H:i');
     }
 
     public function setClosingTime(\DateTimeInterface $closingTime): self

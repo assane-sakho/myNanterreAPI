@@ -20,7 +20,7 @@ class Product
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $id;
 
@@ -28,7 +28,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $name;
 
@@ -36,7 +36,7 @@ class Product
      * @var string|null
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2, nullable=true)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $price;
 
