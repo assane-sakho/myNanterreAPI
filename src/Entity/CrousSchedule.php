@@ -41,7 +41,7 @@ class CrousSchedule
     /**
      * @var string
      *
-     * @ORM\Column(name="days", type="string", length=17, nullable=false)
+     * @ORM\Column(name="days", type="string", length=21, nullable=false)
      * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $days;
