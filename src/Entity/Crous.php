@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Service\ImageService;
 
 /**
  * Crous
@@ -73,6 +74,23 @@ class Crous
      * @Groups({"simpleCrous:read", "completeCrous:read"})
      */
     private $crousAttendance;
+
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=15)
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=15)
+     * @Groups({"simpleCrous:read", "completeCrous:read"})
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $imageUrl;
 
     public function __construct()
     {
@@ -198,6 +216,70 @@ class Crous
         }
 
         return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+    
+    /**
+    * @Groups({"simpleCrous:read", "completeCrous:read"})
+    */
+    public function getImage(): ?string
+    {
+        if($this->imageUrl == null )
+        {
+            return $_ENV['NANTERRE_LOGO_BASE64'];
+        }
+       
+        $imageService = new ImageService();
+        return $imageService->getImageBytesFromUrl($this->imageUrl);    
+    }
+
+    /**
+    * @Groups({"simpleCrous:read", "completeCrous:read"})
+    */
+    public function getProdutcsNameConcat(): ?string
+    {
+        $result = [];
+        foreach($this->crousProducts as $crousProduct)
+        {
+            $result[] =  $crousProduct->getProduct()->getName();
+        }
+
+        return implode(', ', $result);    
     }
 
 
