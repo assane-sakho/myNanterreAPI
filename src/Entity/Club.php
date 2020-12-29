@@ -200,7 +200,7 @@ class Club
 
     public function getCreationDate()
     {
-        return $this->creationDate->format("Y-m-d H:i");
+        return $this->creationDate->format("Y-m-d");
     }
 
     public function setCreationDate(\DateTimeInterface $creationDate): self
