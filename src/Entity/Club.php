@@ -17,7 +17,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity
  * @ApiResource(
  *     attributes={
- *          "order"={"name"}
+ *          "order"={"name"},
+ *          "maximum_items_per_page"=10,
  *      },
  *     itemOperations={
  *          "get"={
