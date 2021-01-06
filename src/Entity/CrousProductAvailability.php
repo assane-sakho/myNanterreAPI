@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -10,6 +12,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="crous_product_availability", indexes={@ORM\Index(name="crous_product_id", columns={"crous_product_id"})})
  * @ORM\Entity
+ * @ApiResource(
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"crousProductAvailability:read"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"crousProductAvailability:read"}}
+ *         },
+ *         "post" = {
+ *             "normalization_context"={"groups"={"crousProductAvailability:write"}}
+ *         }
+ *     }
+ * )
  */
 class CrousProductAvailability
 {
@@ -19,7 +36,7 @@ class CrousProductAvailability
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $id;
 
@@ -27,15 +44,15 @@ class CrousProductAvailability
      * @var binary
      *
      * @ORM\Column(name="isAvailable", type="boolean", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read", "crousProductAvailability:write"})
      */
-    private $isavailable;
+    private $isAvailable;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $date;
 
@@ -44,26 +61,30 @@ class CrousProductAvailability
      */
     private $crousProduct;
 
+    public function __construct()
+    {
+        $this->date = new DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIsavailable()
+    public function getIsAvailable()
     {
-        return $this->isavailable;
+        return $this->isAvailable;
     }
 
-    public function setIsavailable($isavailable): self
+    public function setIsAvailable($isAvailable): self
     {
-        $this->isavailable = $isavailable;
+        $this->isAvailable = $isAvailable;
 
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
+    public function getDate(){
+        return $this->date->format('Y-m-d H:i');
     }
 
     public function setDate(\DateTimeInterface $date): self

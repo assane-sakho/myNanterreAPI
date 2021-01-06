@@ -6,12 +6,30 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * CrousProduct
  *
  * @ORM\Table(name="crous_product", indexes={@ORM\Index(name="product_id", columns={"product_id"}), @ORM\Index(name="crous_id", columns={"crous_id"})})
  * @ORM\Entity
+ * @ApiResource(
+ *     attributes={"pagination_enabled"=false},
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"crous_product:read"}}
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"crous_product:read"}}
+ *         }
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"crous": "exact"})
  */
 class CrousProduct
 {
@@ -21,7 +39,7 @@ class CrousProduct
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $id;
 
@@ -32,13 +50,13 @@ class CrousProduct
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="crousProducts")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $product;
 
     /**
      * @ORM\OneToMany(targetEntity=CrousProductAvailability::class, mappedBy="crousProduct")
-     * @Groups({"crous:read", "crous:write"})
+     * @Groups({"completeCrous:read", "crous_product:read"})
      */
     private $crousProductAvailabilities;
 

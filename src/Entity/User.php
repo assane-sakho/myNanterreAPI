@@ -4,12 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * User
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="university_id", columns={"university_id"})}, indexes={@ORM\Index(name="user_type_id", columns={"user_type_id"}), @ORM\Index(name="grade_id", columns={"grade_id"})})
  * @ORM\Entity
+ *  * @ApiResource(
+ *      itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"completeUser:read", "completeUser:write"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"simpleUser:read"}}
+ *         }
+ *     }
+ * ) 
  */
 class User
 {
@@ -19,7 +32,7 @@ class User
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
     private $id;
 
@@ -27,7 +40,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
     private $firstName;
 
@@ -35,7 +48,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
     private $lastName;
 
@@ -46,7 +59,7 @@ class User
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_type_id", referencedColumnName="id")
      * })
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
     private $userType;
 

@@ -4,11 +4,37 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use DateTime;
+
 /**
  * ClubPublication
  *
  * @ORM\Table(name="club_publication", indexes={@ORM\Index(name="club_id", columns={"club_id"})})
  * @ORM\Entity
+ * @ApiResource(
+ *     attributes={"pagination_enabled"=false},
+ *     itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"club_publication:read"}}
+ *         },
+ *          "put" = {
+ *             "normalization_context"={"groups"={"club_publication:write"}}
+ *          },
+ *         "delete"
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"club_publication:read"}}
+ *         },
+ *         "post" = {
+ *             "normalization_context"={"groups"={"club_publication:write"}}
+ *         }
+ *     }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"club": "exact"})
  */
 class ClubPublication
 {
@@ -18,7 +44,7 @@ class ClubPublication
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $id;
 
@@ -26,7 +52,7 @@ class ClubPublication
      * @var string
      *
      * @ORM\Column(name="message", type="string", length=255, nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $message;
 
@@ -34,9 +60,17 @@ class ClubPublication
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
-     * @Groups({"club:read", "club:write"})
+     * @Groups({"completeClub:read", "completeClub:write", "club_publication:read", "club_publication:write"})
      */
     private $date;
+
+    /**
+     * @var binary
+     *
+     * @ORM\Column(name="isEdited", type="boolean", nullable=false)
+     * @Groups({"completeCrous:read"})
+     */
+    private $isEdited;
 
     /**
      * @var \Club
@@ -47,6 +81,13 @@ class ClubPublication
      * })
      */
     private $club;
+
+    public function __construct()
+    {
+        $this->date = new DateTime();
+        $this->isEdited = false;
+    }
+
 
     public function getId(): ?int
     {
@@ -73,6 +114,18 @@ class ClubPublication
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIsEdited()
+    {
+        return $this->isEdited;
+    }
+
+    public function setIsEdited($isEdited): self
+    {
+        $this->isEdited = $isEdited;
 
         return $this;
     }

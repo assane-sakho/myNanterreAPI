@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="library", indexes={@ORM\Index(name="building_id", columns={"building_id"})})
  * @ORM\Entity
  * @ApiResource(
+ *     attributes={"pagination_enabled"=false},
  *     itemOperations={
  *          "get"={
  *             "normalization_context"={"groups"={"library:read", "library:write"}}
