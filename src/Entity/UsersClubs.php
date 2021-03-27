@@ -33,6 +33,7 @@ class UsersClubs
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"completeUser:read", "simpleUser:read"})
      */
     private $id;
 
@@ -43,7 +44,7 @@ class UsersClubs
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="club_id", referencedColumnName="id")
      * })
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeUser:read", "simpleUser:read"})
      */
     
     private $club;

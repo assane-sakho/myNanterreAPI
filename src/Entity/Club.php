@@ -47,7 +47,7 @@ class Club
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "simpleUser:read", "completeUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "simpleUser:read", "completeUser:read", "userClub:read"})
      */
     private $id;
 

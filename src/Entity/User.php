@@ -67,7 +67,7 @@ class User
 
     /**
      * @ORM\OneToMany(targetEntity=UsersClubs::class, mappedBy="user")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
      */
     private $followedClubs;
 
@@ -120,8 +120,14 @@ class User
     /**
      * @return Collection|UsersClubs[]
      */
-    public function getFollowedClubs(): ?array
+    public function getFollowedClubs()
     {
-        return array_map(function($o) { return $o->getClub(); }, $this->followedClubs->toArray());
+        $result = new ArrayCollection();
+        foreach($this->followedClubs as $data)
+        {
+            $data->setUser($this);
+            $result->add($data);
+        }
+        return $result;
     }
 }
