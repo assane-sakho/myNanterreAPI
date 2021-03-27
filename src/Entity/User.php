@@ -13,7 +13,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="university_id", columns={"university_id"})}, indexes={@ORM\Index(name="user_type_id", columns={"user_type_id"}), @ORM\Index(name="grade_id", columns={"grade_id"})})
  * @ORM\Entity
- *  * @ApiResource(
+ * @ApiResource(
  *      itemOperations={
  *          "get"={
  *             "normalization_context"={"groups"={"completeUser:read", "completeUser:write"}}
@@ -120,10 +120,8 @@ class User
     /**
      * @return Collection|UsersClubs[]
      */
-    public function getFollowedClubs()
+    public function getFollowedClubs(): ?array
     {
-        $catIds = array_map(function($o) { return $o->getClubId(); }, $this->followedClubs->toArray());
-
-        return $catIds;
+        return array_map(function($o) { return $o->getClub(); }, $this->followedClubs->toArray());
     }
 }

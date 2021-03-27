@@ -5,10 +5,23 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * UsersClubs
- *
+ * @ApiResource(
+ *      itemOperations={
+ *          "get"={
+ *             "normalization_context"={"groups"={"completeUser:read", "completeUser:write"}}
+ *          }
+ *     },
+ *     collectionOperations={
+ *         "get"={
+ *             "normalization_context"={"groups"={"simpleUser:read"}}
+ *         },
+ *         "post"
+ *     }
+ * )
  * @ORM\Table(name="users_clubs", indexes={@ORM\Index(name="user_id", columns={"user_id"}), @ORM\Index(name="club_id", columns={"club_id"})})
  * @ORM\Entity
  */
@@ -32,6 +45,7 @@ class UsersClubs
      * })
      * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
+    
     private $club;
 
     /**
@@ -45,9 +59,9 @@ class UsersClubs
         return $this->id;
     }
 
-    public function getClubId(): ?int
+    public function getClub()
     {
-        return $this->club->getId();
+        return $this->club;
     }
 
     public function setClub(?Club $club): self
