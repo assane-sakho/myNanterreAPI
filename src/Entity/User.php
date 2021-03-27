@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -63,6 +65,17 @@ class User
      */
     private $userType;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UsersClubs::class, mappedBy="user")
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     */
+    private $followedClubs;
+
+    public function __construct()
+    {
+        $this->followedClubs = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,4 +117,13 @@ class User
         return $this;
     }
 
+    /**
+     * @return Collection|UsersClubs[]
+     */
+    public function getFollowedClubs()
+    {
+        $catIds = array_map(function($o) { return $o->getClubId(); }, $this->followedClubs->toArray());
+
+        return $catIds;
+    }
 }
