@@ -79,6 +79,7 @@ class ClubPublication
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="club_id", referencedColumnName="id")
      * })
+     * @Groups({"club_publication:read"})
      */
     private $club;
 

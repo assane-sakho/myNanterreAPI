@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -11,7 +13,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="university_id", columns={"university_id"})}, indexes={@ORM\Index(name="user_type_id", columns={"user_type_id"}), @ORM\Index(name="grade_id", columns={"grade_id"})})
  * @ORM\Entity
- *  * @ApiResource(
+ * @ApiResource(
  *      itemOperations={
  *          "get"={
  *             "normalization_context"={"groups"={"completeUser:read", "completeUser:write"}}
@@ -63,6 +65,17 @@ class User
      */
     private $userType;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UsersClubs::class, mappedBy="user")
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
+     */
+    private $followedClubs;
+
+    public function __construct()
+    {
+        $this->followedClubs = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,4 +117,17 @@ class User
         return $this;
     }
 
+    /**
+     * @return Collection|UsersClubs[]
+     */
+    public function getFollowedClubs()
+    {
+        $result = new ArrayCollection();
+        foreach($this->followedClubs as $data)
+        {
+            $data->setUser($this);
+            $result->add($data);
+        }
+        return $result;
+    }
 }
