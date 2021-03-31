@@ -67,7 +67,7 @@ class User
 
     /**
      * @ORM\OneToMany(targetEntity=UsersClubs::class, mappedBy="user")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
+     * @Groups({"completeUser:read", "simpleUser:read"})
      */
     private $followedClubs;
 
