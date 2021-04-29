@@ -9,6 +9,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Service\ImageService;
 use DateTime;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Club
@@ -18,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     attributes={
  *          "order"={"name"},
- *          "maximum_items_per_page"=10,
+ *          "pagination_items_per_page"=10,
  *      },
  *     itemOperations={
  *          "get"={
@@ -38,6 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         }
  *     }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"creator": "exact"})
  */
 class Club
 {
