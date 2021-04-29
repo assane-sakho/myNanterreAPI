@@ -35,3 +35,6 @@ services:
         class: App\EventListener\UserSetter
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+    App\DataPersister\: 
+        resource: '../src/DataPersister/'
+        tags: [ 'api_platform.data_persister' ]

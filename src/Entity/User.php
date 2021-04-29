@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -17,7 +18,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ApiResource(
  *      itemOperations={
  *          "get"={
- *             "normalization_context"={"groups"={"completeUser:read", "completeUser:write"}}
+ *             "normalization_context"={"groups"={"completeUser:read"}}
  *          }
  *     },
  *     collectionOperations={
@@ -25,11 +26,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *             "normalization_context"={"groups"={"simpleUser:read"}}
  *         },
  *         "post"={
- *             "normalization_context"={"groups"={"completeUser:write"}}
+ *             "denormalizationContext"={"groups"={"completeUser:write"}}
  *         }
- *     }
+ *     },
+ *     denormalizationContext={"groups"={"user:write"}}
  * ) 
  */
+
 class User implements UserInterface
 {
     /**
@@ -38,7 +41,7 @@ class User implements UserInterface
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
      */
     private $id;
 
@@ -46,7 +49,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "user:write", "simpleUser:read"})
      */
     private $firstName;
 
@@ -54,7 +57,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255, nullable=false)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "user:write", "simpleUser:read"})
      */
     private $lastName;
 
@@ -77,7 +80,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "user:write", "simpleUser:read"})
      */
     private $email;
 
@@ -90,9 +93,14 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
      */
     private $password;
+
+    /**
+     * @Groups("user:write")
+     * @SerializedName("password")
+     */
+    private $plainPassword;
 
     public function __construct()
     {
@@ -210,21 +218,28 @@ class User implements UserInterface
         return $this;
     }
 
+     /**
+     * @see UserInterface
+     */
+    public function getPlainPassword(): string
+    {
+        return (string) $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+
     /**
      * @see UserInterface
      */
     public function getSalt()
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function addFollowedClub(UsersClubs $followedClub): self
@@ -248,4 +263,14 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        $this->plainPassword = null;
+    }
+
 }
