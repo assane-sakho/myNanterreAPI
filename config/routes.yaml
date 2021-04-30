@@ -4,3 +4,6 @@ homepage:
     defaults:
         path: /api
         permanent: true
+authentication_token:
+    path: /api/login
+    methods: ['POST']
