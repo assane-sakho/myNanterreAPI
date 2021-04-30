@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * UserType
  *
  * @ORM\Table(name="user_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserTypeRepository")
  */
 class UserType
 {
@@ -19,7 +19,7 @@ class UserType
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
      */
     private $id;
 
@@ -27,7 +27,7 @@ class UserType
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "completeUser:write", "simpleUser:read"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "completeUser:read", "simpleUser:read"})
      */
     private $name;
 
