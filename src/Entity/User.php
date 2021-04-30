@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -31,6 +33,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     },
  *     denormalizationContext={"groups"={"user:write"}}
  * ) 
+ * @ApiFilter(SearchFilter::class, properties={"email": "exact"})
  */
 
 class User implements UserInterface
