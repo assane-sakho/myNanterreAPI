@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Exception\ClientException;
 
 class ImageService
 {
@@ -15,10 +16,15 @@ class ImageService
 
     public function getImageBytesFromUrl($url)
     {
-        $response = $this->client->request('GET', $url);
+        try{
+            $response = $this->client->request('GET', $url);
 
-        $content = base64_encode($response->getContent());
+            $content = base64_encode($response->getContent());
 
-        return $content;
+            return $content;
+        }
+        catch (ClientException $e) {
+            return $_ENV['NANTERRE_LOGO_BASE64'];
+        }
     }
 }
