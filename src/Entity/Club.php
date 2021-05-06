@@ -9,6 +9,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Service\ImageService;
 use DateTime;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Club
@@ -18,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     attributes={
  *          "order"={"name"},
- *          "maximum_items_per_page"=10,
+ *          "pagination_items_per_page"=10,
  *      },
  *     itemOperations={
  *          "get"={
@@ -38,6 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         }
  *     }
  * )
+ * @ApiFilter(SearchFilter::class, properties={"creator": "exact"})
  */
 class Club
 {
@@ -47,7 +50,7 @@ class Club
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "simpleUser:read", "completeUser:read", "userClub:read", "club_publication:read"})
      */
     private $id;
 
@@ -55,7 +58,7 @@ class Club
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "club_publication:read"})
      */
     private $name;
 
@@ -71,7 +74,7 @@ class Club
      * @var string|null
      *
      * @ORM\Column(name="image_bytes", type="blob", nullable=true)
-     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write"})
+     * @Groups({"completeClub:read", "simpleCLub:read", "completeClub:write", "club_publication:read"})
      */
     private $imageBytes;
 
